@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Clientes - Proyéctate en Querétaro</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <div class="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-2xl shadow-lg">
+    <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">
+      <i class="fa-solid fa-house-circle-check mr-2"></i>
+      Registro de Clientes - Proyéctate en Querétaro
+    </h1>
+
+    <form id="clienteForm" class="space-y-4">
+      <!-- Nombre -->
+      <div>
+        <label class="block font-semibold">Nombre completo</label>
+        <input name="nombre" required class="w-full p-2 border border-gray-300 rounded-lg" />
+      </div>
+
+      <!-- Teléfono -->
+      <div>
+        <label class="block font-semibold">Teléfono</label>
+        <input name="telefono" type="tel" required class="w-full p-2 border border-gray-300 rounded-lg" />
+      </div>
+
+      <!-- Correo -->
+      <div>
+        <label class="block font-semibold">Correo electrónico</label>
+        <input name="correo" type="email" required class="w-full p-2 border border-gray-300 rounded-lg" />
+      </div>
+
+      <!-- Tipo de propiedad -->
+      <div>
+        <label class="block font-semibold">¿Qué tipo de propiedad le interesa?</label>
+        <select name="tipoPropiedad" required class="w-full p-2 border border-gray-300 rounded-lg">
+          <option value="">Seleccione una opción</option>
+          <option>Casa</option>
+          <option>Depa</option>
+          <option>Terreno</option>
+          <option>Comercial</option>
+        </select>
+      </div>
+
+      <!-- Zona -->
+      <div>
+        <label class="block font-semibold">¿En qué zona le interesa invertir o vivir?</label>
+        <input name="zona" required class="w-full p-2 border border-gray-300 rounded-lg" />
+      </div>
+
+      <!-- Presupuesto -->
+      <div>
+        <label class="block font-semibold">¿Cuál es su presupuesto estimado?</label>
+        <input name="presupuesto" required class="w-full p-2 border border-gray-300 rounded-lg" />
+      </div>
+
+      <!-- Objetivo -->
+      <div>
+        <label class="block font-semibold">¿Está buscando para...?</label>
+        <select name="objetivo" required class="w-full p-2 border border-gray-300 rounded-lg">
+          <option value="">Seleccione una opción</option>
+          <option>Vivir</option>
+          <option>Invertir</option>
+        </select>
+      </div>
+
+      <!-- Medio -->
+      <div>
+        <label class="block font-semibold">¿Cómo nos conoció?</label>
+        <select name="medio" required class="w-full p-2 border border-gray-300 rounded-lg">
+          <option value="">Seleccione una opción</option>
+          <option>Facebook</option>
+          <option>Instagram</option>
+          <option>Sitio web</option>
+          <option>Referido</option>
+          <option>EasyBroker</option>
+          <option>Propppit</option>
+          <option>Lona</option>
+          <option>Otro</option>
+        </select>
+      </div>
+
+      <!-- Comentarios -->
+      <div>
+        <label class="block font-semibold">Comentarios adicionales o especificaciones</label>
+        <textarea name="comentarios" rows="3" class="w-full p-2 border border-gray-300 rounded-lg"></textarea>
+      </div>
+
+      <!-- Botón enviar -->
+      <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition">
+        <i class="fa-solid fa-paper-plane mr-1"></i> Enviar Registro
+      </button>
+    </form>
+
+    <!-- Notificación -->
+    <div id="mensajeExito" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded-lg text-center">
+      <i class="fa-solid fa-circle-check mr-1"></i>
+      ¡Registro enviado correctamente!
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    const form = document.getElementById('clienteForm');
+    const mensajeExito = document.getElementById('mensajeExito');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const datos = Object.fromEntries(new FormData(form).entries());
+
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycby8Xb_Qew_LN8iuGmMro6CDBSVWcd2loGcbvI-_yKhHketh7OzYvMocg2u8gXhjLLnynw/exec", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+        });
+
+        const responseData = await response.json();
+        
+        if(responseData.status === 'success') {
+          // Mostrar mensaje de éxito
+          form.reset();
+          mensajeExito.classList.remove('hidden');
+          mensajeExito.classList.add('animate-bounce');
+          setTimeout(() => {
+            mensajeExito.classList.add('hidden');
+            mensajeExito.classList.remove('animate-bounce');
+          }, 4000);
+        } else {
+          alert("❌ Error al registrar los datos.");
+        }
+
+      } catch (error) {
+        alert("❌ Error al enviar los datos. Intenta de nuevo.");
+        console.error(error);
+      }
+    });
+  </script>
+
+</body>
+</html>
